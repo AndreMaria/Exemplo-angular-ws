@@ -7,40 +7,24 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 })
 export class UserService {
 
-  url: string = "http://coletaonline-dev.raizen.com/ColetaOnline-dev/JWT/wsToken.asmx";
+  url: string = "SUA URL";
 
   constructor(private http: HttpClient) {
   }
 
-  verifyTokenWithPost(token: string) {
+  verifyTokenWithPost(token: string, id: string) {
 
-    let teste = 
-    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/"> ' + 
-    '<soapenv:Header/>' +
-    '<soapenv:Body>' +
-      '<tem:GetMenu>'+
-          '<tem:id>8</tem:id>'+
-          '<tem:token>' + token +'</tem:token>'+
-      '</tem:GetMenu>'+
-    '</soapenv:Body>'+
-    '</soapenv:Envelope>';
-
-    console.log(teste);
-
+    let body = new HttpParams();
+    body = body.set('id', id);
+    body = body.set('token', token);
     this.http
-      .post(this.url, teste, {
-        headers: new HttpHeaders()
-        .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8') 
-        .append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS') 
-        .append('Access-Control-Allow-Origin', '*')
-        .append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization'),
-        responseType: "text"
-      })
+      .post(this.url, body, {responseType: "text"})
       .subscribe(
         data => {
           console.log("response", data);
         },
         error => {
+          debugger;
           console.log('vai curintia')
           debugger;
           console.log(JSON.stringify(error));
